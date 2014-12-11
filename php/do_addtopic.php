@@ -20,35 +20,49 @@ if (  (!$_POST['topic_owner'])  ||  (!$_POST['topic_title'])  ||  (!$_POST['post
   
   //create first query.
   //now() function returns the time created (so cool!).
-  
-  //-- 
-  $sql_add_topic = "INSERT INTO forum_topics (topic_title, topic_create_time, topic_owner) 
-  VALUES ('" . $sql_topic_title . "', now(), '" . $sql_topic_owner ."')" ;
+    
+  //--
+    $sql_add_table = "CREATE TABLE IF NOT EXISTS forum_topics
+    ( id INT NOT NULL auto_increment,
+     PRIMARY KEY(ID),
+     topic_title VARCHAR(32),
+     topic_create_time DATETIME,
+     topic_owner varchar(32)
+     ); ";
+    
+    $sql_add_topic = "INSERT INTO forum_topics (topic_title, topic_create_time, topic_owner) VALUES ('" . $sql_topic_title . "', now(), '" . $sql_topic_owner ."');";
+    
   //--
   
-  //--
-  $add_topic_res = mysqli_query($mysqli, $sql_add_topic) or 
+  //-- add table if one does not exist.
+  $add_table_res = mysqli_query($mysqli, $sql_add_table) or
                             die(mysqli_error($mysqli)); 
-  //--
-  
+  //-- add topic.
+  $add_topic_res = mysqli_query($mysqli, $sql_add_topic) or
+                            die(mysqli_error($mysqli));
   
   //retrieve last query id.
   $topic_id = mysqli_insert_id($mysqli);
   
   //second query.
   
-  //--
-  $sql_add_post = "INSERT INTO forum_posts (topid_id, post_text, post_create_time, post_owner) 
-  VALUES ('" . $topic_id . "', '" . $sql_post_text ."' , now(), '" . $sql_topic_owner . "')"; 
+  //-- add a table named post.
+  $sql_create_post_table = "CREATE TABLE IF NOT EXISTS forum_posts (topic_id INT NOT NULL,
+  post_text VARCHAR(240), post_create_time DATETIME, post_owner VARCHAR(240) ); ";
+  //-- add a post to that table.
+  $sql_add_table_post = "INSERT INTO forum_posts (topic_id, post_text, post_create_time, post_owner)
+  VALUES ('" . $topic_id . "', '" . $sql_post_text ."' , now(), '" . $sql_topic_owner . "');";
   //--
   
-  $add_post_res = mysqli_query($mysqli, $sql_add_post) or 
-							die(mysqli_error($mysqli)); 
+  $add_create_table_res = mysqli_query($mysqli, $sql_create_post_table) or
+							die(mysqli_error($mysqli));
+  $add_table_post_res   = mysqli_query($mysqli, $sql_add_table_post) or
+                            die(mysqli_error($mysqli));
 							
-	//closing the connection. (finally)
-	mysqli_close($mysqli); 
+  //closing the connection. (finally)
+  mysqli_close($mysqli);
 	
-	$display_block = "<p>The<strong>" . $_POST['topic_title'] ."</strong> 
+	$display_block = "<p>The<strong>" . $_POST['topic_title'] ." </strong>
 		topic has been created.</p>"; 
 	
 ?>
