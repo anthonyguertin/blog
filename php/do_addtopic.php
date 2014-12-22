@@ -62,9 +62,9 @@ if (  (!$_POST['topic_owner'])  ||  (!$_POST['topic_title'])  ||  (!$_POST['post
   //closing the connection. (finally)
   mysqli_close($mysqli);
 	
-	$display_block = "<p>The<strong>" . $_POST['topic_title'] ." </strong>
-		topic has been created.</p>"; 
-	
+	//$display_block = "<p>The<strong>" . $_POST['topic_title'] ." </strong>
+		//topic has been created.</p>"; 
+	header("Location: ./show_topics.php"); 
 ?>
 
 <!DOCTYPE html>
