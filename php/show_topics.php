@@ -91,6 +91,6 @@ if(mysqli_num_rows($get_topics_res) < 1){
 <body>
 <h1>Topics Forum</h1>
 <?php echo $display_block; ?>
-<p>Would you like to <a href="addtopic.html">add a topic?</a></p>
+<p>Would you like to <a href="../addtopic.html">add a topic?</a></p>
 </body>
 </html>
